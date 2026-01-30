@@ -49,29 +49,41 @@ for label, values in data.items():
         horizon[mask],
         y[mask],
         marker="o",
-        linewidth=2,
-        markersize=5,
+        linewidth=4,
+        markersize=8,
         label=label,
     )
 
 ax.set_xscale("log")
 ax.set_yscale("log")
-ax.set_xlabel("Horizon Length")
-ax.set_ylabel("Solve Time (ms)")
+ax.set_xlabel("Horizon Length", fontsize=30)
+ax.set_ylabel("Solve Time (ms)", fontsize=30)
 # ax.set_title("Solver Scaling vs Horizon Length (Log Scale)")
-ax.grid(True, which="both", linestyle="--", linewidth=0.5)
+ax.grid(True, which="both", linestyle="--", linewidth=0.5, alpha=0.5)
 
 # Extend x-range to create space for legend INSIDE axes
 ax.set_xlim(horizon.min(), horizon.max() * 1.6)
 
 ax.legend(
     loc="upper center",
-    bbox_to_anchor=(0.5, -0.15),  # centered below axes
-    ncol=3,                       # adjust columns as needed
+    bbox_to_anchor=(0.58, 1.02),  # centered below axes
+    ncol=1,                       # adjust columns as needed
     frameon=False,
-    columnspacing=1.5,
-    handlelength=2.0,
-    labelspacing=0.8,
+    fontsize=30,
+    columnspacing=1.,
+    handlelength=1.5,
+    labelspacing=0.2,
+)
+
+ax.plot(
+    1000,
+    60.9,
+    marker="x",
+    markersize=18,
+    markeredgewidth=4,
+    linestyle="None",
+    color="black",   # remove if you want default color cycle
+    zorder=10,
 )
 
 # Leave space at the bottom for the legend
@@ -87,3 +99,4 @@ fig.tight_layout(rect=[0, 0, 0.72, 1])
 # -----------------------------
 fig.savefig("solver_scaling_log.pdf", bbox_inches="tight")
 plt.show()
+print('done')

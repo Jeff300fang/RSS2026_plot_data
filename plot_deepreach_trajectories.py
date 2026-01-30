@@ -18,7 +18,7 @@ plt.rcParams.update({
     "font.family": "serif",
     "font.serif": ["cmr10"],
     "mathtext.fontset": "cm",
-    "text.usetex": False,
+    "text.usetex": True,
     "pdf.fonttype": 42,   # embed fonts in PDF
     "ps.fonttype": 42,
 })
@@ -75,20 +75,20 @@ def draw_init_box(ax, init_center, init_half_extents):
     )
     ax.add_patch(r)
 
-def draw_labeled_point(ax, xy, label, *, color="black", marker="o"):
+def draw_labeled_point(ax, xy, label, *, color="black", marker="o", text_dx=0.03, text_dy=0.03):
     ax.scatter(
         xy[0],
         xy[1],
-        s=60,
+        s=70,
         marker=marker,
         color=color,
         zorder=8,
     )
     ax.text(
-        xy[0] + 0.03,
-        xy[1] + 0.03,
+        xy[0] + text_dx,
+        xy[1] + text_dy,
         label,
-        fontsize=10,
+        fontsize=16,
         ha="left",
         va="bottom",
         zorder=9,
@@ -117,8 +117,10 @@ def main():
 
     fig, ax = plt.subplots(figsize=(6.5, 6.5))
 
-    draw_labeled_point(ax, (-0.75, -0.75), "Start", color="black")
-    draw_labeled_point(ax, (1.0, 0.4), "Goal", color="black", marker="*")
+    # draw_labeled_point(ax, (-0.75, -0.75), "Start", color="black")
+    # draw_labeled_point(ax, (1.0, 0.4), "Goal", color="black", marker="*")
+    draw_labeled_point(ax, (-0.75, -0.75), "Start", color="black", marker="o", text_dx=0.03, text_dy=0.04)
+    draw_labeled_point(ax, (1.0, 0.4), "Goal", color="black", marker="*", text_dx=-0.06, text_dy=0.05)
 
     # Decorations
     if obs_center is not None and obs_radius is not None:
@@ -168,10 +170,10 @@ def main():
             )
 
     ax.set_aspect("equal", adjustable="box")
-    ax.set_xlabel("X Position")
-    ax.set_ylabel("Y Position")
+    ax.set_xlabel("$p_x$", fontsize=20)
+    ax.set_ylabel("$p_y$", fontsize=20)
     ax.grid(True, alpha=0.3)
-    ax.set_xlim(-1, 1.2)
+    ax.set_xlim(-0.8, 1.2)
     ax.set_ylim(-1, 0.6)
 
     legend_handles = [
@@ -196,15 +198,16 @@ def main():
             color="#ff7f0e",
             linewidth=3.0,
             alpha=0.75,
-            label="DeepReach rollouts",
+            label="DeepReach\nrollouts",
         ),
     ]
 
     ax.legend(
         handles=legend_handles,
-        loc="upper center",
-        bbox_to_anchor=(0.5, -0.12),
-        ncol=3,
+        loc="lower right",
+        fontsize=16,
+        # bbox_to_anchor=(0.5, -0.12),
+        ncol=1,
         framealpha=0.9,
     )
     fig.savefig(PDF_OUT, bbox_inches="tight")
