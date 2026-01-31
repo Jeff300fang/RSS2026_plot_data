@@ -17,7 +17,7 @@ plt.rcParams.update({
     "font.family": "serif",
     "font.serif": ["cmr10"],
     "mathtext.fontset": "cm",
-    "text.usetex": False,
+    "text.usetex": True,
     "pdf.fonttype": 42,
     "ps.fonttype": 42,
 })
@@ -53,7 +53,7 @@ def draw_labeled_point(ax, xy, label, *, color="black", marker="o", text_dx=0.03
         xy[0] + text_dx,
         xy[1] + text_dy,
         label,
-        fontsize=12,
+        fontsize=16,
         ha="left",
         va="bottom",
         zorder=9,
@@ -102,8 +102,8 @@ def main():
     fig, ax = plt.subplots(figsize=(6.5, 6.5))
 
     # --- Start / Goal annotations ---
-    draw_labeled_point(ax, start_xy, "Start", color="black", marker="o")
-    draw_labeled_point(ax, goal_xy, "Goal", color="black", marker="*", text_dx=0.03, text_dy=0.03)
+    draw_labeled_point(ax, start_xy, "Start", color="black", marker="o", text_dx=0.03, text_dy=-0.1)
+    draw_labeled_point(ax, goal_xy, "Goal", color="black", marker="*", text_dx=-0.06, text_dy=0.03)
 
     # --- Obstacles ---
     if centers.size and radii.size:
@@ -152,13 +152,13 @@ def main():
 
     # --- Axes styling ---
     ax.set_aspect("equal", adjustable="box")
-    ax.set_xlabel("X Position")
-    ax.set_ylabel("Y Position")
+    ax.set_xlabel("$p_x$", fontsize=20)
+    ax.set_ylabel("$p_y$", fontsize=20)
     ax.grid(True, alpha=0.3)
 
     # Match your framing (edit if desired)
-    ax.set_xlim(-1.0, 1.2)
-    ax.set_ylim(-1.0, 0.6)
+    ax.set_xlim(-0.8, 1.2)
+    ax.set_ylim(-1, 0.6)
 
     # --- Legend (Obstacle / Crashes / DeepReach rollouts / Robust tubes) ---
     # You asked earlier for 3 items; now that we're plotting tubes, I’m including it as a 4th.
@@ -166,15 +166,18 @@ def main():
     legend_handles = [
         Patch(facecolor="red", edgecolor="darkred", alpha=0.25, label="Obstacle"),
         Line2D([], [], marker="X", linestyle="None", color=crash_color, markersize=9, label="Crashes"),
-        Line2D([], [], color=rollout_color, linewidth=3.0, alpha=0.75, label="GPU-SLS rollouts"),
+        Line2D([], [], color=rollout_color, linewidth=3.0, alpha=0.75, label="GPU-SLS\nrollouts"),
         Patch(facecolor=tube_face, edgecolor="none", alpha=min(0.35, tube_alpha * 3.0), label="Robust tubes"),
     ]
 
     ax.legend(
         handles=legend_handles,
-        loc="upper center",
-        bbox_to_anchor=(0.5, -0.14),
-        ncol=2,               # 2 columns to avoid a super-wide legend now that there are 4 items
+        loc="lower right",
+        fontsize=16,
+        labelspacing=0.3,
+        borderaxespad=0.2,
+        # bbox_to_anchor=(0.5, -0.14),
+        ncol=1,               # 2 columns to avoid a super-wide legend now that there are 4 items
         framealpha=0.9,
     )
 
